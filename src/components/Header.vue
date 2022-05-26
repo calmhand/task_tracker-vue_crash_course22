@@ -1,7 +1,9 @@
 <template>
     <header>
         <h1>{{title}}</h1>
-        <TaskButton @btn-click="$emit('toggle-add-task')" 
+        <TaskButton 
+        @btn-click="$emit('toggle-add-task')" 
+        v-show="homePage"
         :text="showAddTask ? 'Close' : 'Add Task'" 
         :color="showAddTask ? 'red' : 'green'"/>
     </header>
@@ -17,6 +19,15 @@ import TaskButton from "./Button.vue"
         },
         components: {
             TaskButton
+        },
+        computed: {
+            homePage() {
+                if (this.$route.path === '/') {
+                    return true
+                } else {
+                    return false
+                }
+            }
         }
     }
 </script>

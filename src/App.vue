@@ -3,24 +3,24 @@
         <TaskHeader @toggle-add-task="toggleAddTask" 
         title="Task Tracker"
         :showAddTask="showAddTask"/>
-        <div v-show="showAddTask">
-            <AddTask @add-task="addTask" />
-        </div>
-        <UserTasks @toggle-reminder="toggleReminder" @delete-task="deleteTask" :tasks="tasks"/>
+
+        <router-view :showAddTask="showAddTask"></router-view>
+        
+        <Footer />
     </div>
 </template>
 
 <script>
 import TaskHeader from './components/Header'
-import UserTasks from './components/Tasks'
-import AddTask from './components/AddTask'
+import Footer from './components/Footer'
 
+// In the App.vue, typically you only want to app 
+// components that will be visible on every page of your application.
 export default {
     name: 'App',
     components: {
         TaskHeader,
-        UserTasks,
-        AddTask
+        Footer,
     },
     data() {
         return {
@@ -32,70 +32,7 @@ export default {
         toggleAddTask() {
             this.showAddTask = !this.showAddTask
         },
-        async addTask(task) {
-            // send task object to server
-            const res = await fetch('api/tasks', {
-                method: 'POST',
-                headers: {
-                    'Content-type': 'application/json',
-                },
-                body: JSON.stringify(task)
-            })
-
-            const data = await res.json()
-
-            this.tasks = [...this.tasks, data]
-        },
-        async deleteTask(id) {
-            if (confirm('Are you sure?')) {
-                const res = await fetch(`/api/tasks/${id}`, {
-                    method: 'DELETE'
-                })
-
-                res.status === 200 ? (this.tasks = 
-                this.tasks.filter((task) => task.id !== id))
-                : alert('Deletion Error')
-            }
-        },
-
-        async toggleReminder(id) {
-            const tasktoToggle = await this.fetchTask(id)
-            const updTask = {...tasktoToggle, reminder: !tasktoToggle.reminder}
-
-            const res = await fetch(`api/tasks/${id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-type': 'application/json'
-                },
-                body: JSON.stringify(updTask)
-            })
-
-            const data = await res.json()
-
-            this.tasks = this.tasks.map((task) => 
-            task.id === id ? 
-            { ...task, reminder: 
-            data.reminder } : task
-            )
-        },
-        async fetchTasks() {
-            const res = await fetch('api/tasks') // get request
-
-            const data = await res.json()
-
-            return data
-        },
-        async fetchTask(id) {
-            const res = await fetch(`api/tasks/${id}`) // get request for single task
-
-            const data = await res.json()
-
-            return data
-        }
     },
-    async created() {
-        this.tasks = await this.fetchTasks()
-    }
 }
 </script>
 
