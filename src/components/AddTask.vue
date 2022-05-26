@@ -44,7 +44,7 @@
                 }
 
                 const newTask = {
-                    id: Math.floor(Math.random() * 100000), // results in repeated IDs. Only used for demonstrative purposes
+                    // id: Math.floor(Math.random() * 100000), // results in repeated IDs. Only used for demonstrative purposes. Used prior to implementing JSON Server
                     text: this.text,
                     day: this.day,
                     reminder: this.reminder

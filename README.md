@@ -1,4 +1,9 @@
 # crash_cource-2022
+Programmer: calmhand
+
+Small scale task tracking application created for the purpose of learning Vue and its tools.
+
+Tutorial Used: https://www.youtube.com/watch?v=qZXt1Aom3Cs
 
 ## Project setup
 ```
